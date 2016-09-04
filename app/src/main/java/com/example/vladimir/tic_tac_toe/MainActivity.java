@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     mInfo.setText(R.string.red_turn);
                 }
 
+                mWinner=0;
                 mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
         });
@@ -104,10 +105,14 @@ public class MainActivity extends AppCompatActivity {
             mInfo.setText(R.string.green_wins);
             mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.GreenPlayer));
         }
-        else{
+        else if(mWinner==-1){
             //Red player won
             mInfo.setText(R.string.red_wins);
             mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.RedPlayer));
+        }
+        else{
+            //Draw
+            mInfo.setText(R.string.draw);
         }
     }
 
@@ -168,6 +173,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         }
-        return false;
+
+        for (int i:mPlacings) {
+            if(i==0){
+                return false;
+            }
+        }
+
+        return true;
     }
 }
