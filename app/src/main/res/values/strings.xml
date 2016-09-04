@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Tic-Tac-Toe</string>
+    <string name="retry_button">Retry</string>
+    <string name="red_turn">Red player\'s turn</string>
+    <string name="green_turn">Green player\'s turn</string>
+    <string name="red_wins">Red player wins!</string>
+    <string name="green_wins">Green player wins!</string>
+    <string name="start_game">Click on a button to start playing</string>
+</resources>
