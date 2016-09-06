@@ -1,14 +1,19 @@
 <resources>
     <string name="app_name">Tic-Tac-Toe</string>
     <string name="retry_button">Retry</string>
-    <string name="red_turn">Red player\'s turn</string>
-    <string name="green_turn">Green player\'s turn</string>
-    <string name="red_wins">Red player wins!</string>
-    <string name="green_wins">Green player wins!</string>
+    <string name="X_turn">X\'s turn</string>
+    <string name="O_turn">O\'s turn</string>
+    <string name="O_wins">O wins!</string>
+    <string name="X_wins">X wins!</string>
     <string name="draw">Draw!</string>
     <string name="start_game">Click on a button to start playing</string>
     <string name="home_text">Choose mode</string>
-    <string name="against_AI">Play against the AI (TODO)</string>
+    <string name="against_AI">Play against the AI</string>
     <string name="two_player">Two players</string>
-
+    <string name="X">X</string>
+    <string name="O">O</string>
+    <string name="your_turn">It\'s your turn</string>
+    <string name="AI_turn">It\'s AI\'s turn</string>
+    <string name="you_win">You won!!</string>
+    <string name="you_lost">You lost!!</string>
 </resources>
