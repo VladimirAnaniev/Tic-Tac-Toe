@@ -74,7 +74,7 @@ public class AgainstAI extends Activity {
                 mGameBoard.resetBoard();
 
                 mCurrentPlayer=Constants.PLAYER;
-                mInfo.setText(R.string.X_turn);
+                mInfo.setText(R.string.your_turn);
 
                 mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
@@ -111,16 +111,14 @@ public class AgainstAI extends Activity {
     private void handleGameClick(Button view){
         //Update placings and current player
         mGameBoard.changeBoardState(mCurrentPlayer, mGameButtons.indexOf(view));
-        view.setEnabled(false);
-
+        for(Button btn:mGameButtons){
+            btn.setEnabled(false);
+        }
 
         view.setText(R.string.X);
         view.setTextColor(ContextCompat.getColor(mContext,R.color.GreenPlayer));
         mInfo.setText(R.string.AI_turn);
         mCurrentPlayer=Constants.AI;
-        for(Button btn:mGameButtons){
-            btn.setEnabled(false);
-        }
 
         //Check if game should end
         if(mGameBoard.hasGameEnded()){

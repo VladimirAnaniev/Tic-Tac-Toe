@@ -12,7 +12,7 @@ public class AIPlayer {
     }
 
     public Integer move(){
-        Integer[] result = minimax(5,Constants.AI);
+        Integer[] result = minimax(9,Constants.AI);
         return result[1];
     }
 
