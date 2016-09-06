@@ -44,9 +44,10 @@ public class TwoPlayers extends AppCompatActivity {
         mGameButtons.add((Button)findViewById(R.id.button8));
         mGameButtons.add((Button)findViewById(R.id.button9));
 
-        mCurrentPlayer=1;
+        mCurrentPlayer=Constants.X;
 
         mInfo=(TextView) findViewById(R.id.textView);
+        mInfo.setText(R.string.X_turn);
         mRetryButton=(Button) findViewById(R.id.retry_button);
 
 
@@ -59,7 +60,7 @@ public class TwoPlayers extends AppCompatActivity {
 
                     //Check if game should end
                     if(mGameBoard.hasGameEnded()){
-                        endGame(mGameBoard.getWinner());
+                        endGame(mGameBoard.getWinner(),mGameBoard.getWinningRow());
                     }
                 }
             });
@@ -72,38 +73,40 @@ public class TwoPlayers extends AppCompatActivity {
                 //Reset game
                 for (Button button:mGameButtons) {
                     button.setBackgroundResource(R.drawable.button_empty);
+                    button.setText("");
                     button.setEnabled(true);
                 }
 
                 mGameBoard.resetBoard();
 
-                //Show whose turn it is
-                if(mCurrentPlayer==1){
-                    mInfo.setText(R.string.green_turn);
-                }
-                else{
-                    mInfo.setText(R.string.red_turn);
-                }
+                mCurrentPlayer=Constants.X;
+                mInfo.setText(R.string.X_turn);
 
                 mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             }
         });
     }
 
-    private void endGame(Integer winner) {
+    private void endGame(Integer winner, ArrayList<Integer> winningRow) {
         for (Button button:mGameButtons) {
             button.setEnabled(false);
         }
 
-        if(winner.equals(Constants.GREEN_PLAYER)){
-            //Green player Won
-            mInfo.setText(R.string.green_wins);
+        if(winner.equals(Constants.X)){
+            //X player Won
+            mInfo.setText(R.string.X_wins);
             mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.GreenPlayer));
+            for(int i=0;i<winningRow.size();i++){
+                mGameButtons.get(winningRow.get(i)).setBackgroundResource(R.drawable.button_green);
+            }
         }
-        else if(winner.equals(Constants.RED_PLAYER)){
-            //Red player won
-            mInfo.setText(R.string.red_wins);
+        else if(winner.equals(Constants.O)){
+            //O player won
+            mInfo.setText(R.string.O_wins);
             mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.RedPlayer));
+            for(int i=0;i<winningRow.size();i++){
+                mGameButtons.get(winningRow.get(i)).setBackgroundResource(R.drawable.button_red);
+            }
         }
         else if(winner.equals(Constants.DRAW)){
             //Draw
@@ -117,15 +120,17 @@ public class TwoPlayers extends AppCompatActivity {
         view.setEnabled(false);
 
         //Change the view depending on the player
-        if(mCurrentPlayer.equals(Constants.GREEN_PLAYER)){
-            view.setBackgroundResource(R.drawable.button_green);
-            mInfo.setText(R.string.red_turn);
-            mCurrentPlayer=Constants.RED_PLAYER;
+        if(mCurrentPlayer.equals(Constants.X)){
+            view.setText(R.string.X);
+            view.setTextColor(ContextCompat.getColor(mContext,R.color.GreenPlayer));
+            mInfo.setText(R.string.O_turn);
+            mCurrentPlayer=Constants.O;
         }
-        else if(mCurrentPlayer.equals(Constants.RED_PLAYER)) {
-            view.setBackgroundResource(R.drawable.button_red);
-            mInfo.setText(R.string.green_turn);
-            mCurrentPlayer=Constants.GREEN_PLAYER;
+        else if(mCurrentPlayer.equals(Constants.O)) {
+            view.setText(R.string.O);
+            view.setTextColor(ContextCompat.getColor(mContext,R.color.RedPlayer));
+            mInfo.setText(R.string.X_turn);
+            mCurrentPlayer=Constants.X;
         }
     }
 }
