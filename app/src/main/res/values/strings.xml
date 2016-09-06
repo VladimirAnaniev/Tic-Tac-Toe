@@ -7,4 +7,8 @@
     <string name="green_wins">Green player wins!</string>
     <string name="draw">Draw!</string>
     <string name="start_game">Click on a button to start playing</string>
+    <string name="home_text">Choose mode</string>
+    <string name="against_AI">Play against the AI (TODO)</string>
+    <string name="two_player">Two players</string>
+
 </resources>
