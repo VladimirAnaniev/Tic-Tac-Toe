@@ -16,4 +16,7 @@
     <string name="AI_turn">It\'s AI\'s turn</string>
     <string name="you_win">You won!!</string>
     <string name="you_lost">You lost!!</string>
+    <string name="play_first">Change to X</string>
+    <string name="play_second">Change to O</string>
+
 </resources>

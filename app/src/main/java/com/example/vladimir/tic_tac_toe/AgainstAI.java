@@ -9,14 +9,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AgainstAI extends Activity {
     Integer mCurrentPlayer;
     TextView mInfo;
     Button mRetryButton;
+    Button mFirstOrSecond;
     ArrayList<Button> mGameButtons;
     Board mGameBoard;
     Context mContext;
+    Integer mFirstPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class AgainstAI extends Activity {
         //Initialize variables
         mGameBoard=new Board();
 
+        //Add all game buttons in an ArrayList
         mGameButtons= new ArrayList<>();
         mGameButtons.add((Button)findViewById(R.id.button));
         mGameButtons.add((Button)findViewById(R.id.button2));
@@ -43,13 +47,6 @@ public class AgainstAI extends Activity {
         mGameButtons.add((Button)findViewById(R.id.button8));
         mGameButtons.add((Button)findViewById(R.id.button9));
 
-        mCurrentPlayer=Constants.PLAYER;
-
-        mInfo=(TextView) findViewById(R.id.textView);
-        mInfo.setText(R.string.your_turn);
-        mRetryButton=(Button) findViewById(R.id.retry_button);
-
-
         //Set OnClick listener for all game buttons
         for (Button button:mGameButtons) {
             button.setOnClickListener(new View.OnClickListener() {
@@ -60,28 +57,72 @@ public class AgainstAI extends Activity {
             });
         }
 
-        //onClick for retry button
+        //The player is first by default
+        mFirstPlayer = Constants.PLAYER;
+        mCurrentPlayer = mFirstPlayer;
+
+
+        //Create button for changing the starting player
+        mFirstOrSecond = (Button) findViewById(R.id.first_second);
+        mFirstOrSecond.setVisibility(View.VISIBLE);
+        mFirstOrSecond.setText(R.string.play_second);
+        mFirstOrSecond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mFirstPlayer.equals(Constants.PLAYER)) {
+                    mFirstPlayer=Constants.AI;
+                    mFirstOrSecond.setText(R.string.play_first);
+                }
+                else {
+                    mFirstPlayer=Constants.PLAYER;
+                    mFirstOrSecond.setText(R.string.play_second);
+                }
+
+                //Reset the game after changing
+                resetGame();
+            }
+        });
+
+        //initialize the info text
+        mInfo=(TextView) findViewById(R.id.textView);
+        mInfo.setText(R.string.your_turn);
+
+        //initialize the retry button and handle clicks
+        mRetryButton=(Button) findViewById(R.id.retry_button);
         mRetryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Reset game
-                for (Button button:mGameButtons) {
-                    button.setBackgroundResource(R.drawable.button_empty);
-                    button.setText("");
-                    button.setEnabled(true);
-                }
-
-                mGameBoard.resetBoard();
-
-                mCurrentPlayer=Constants.PLAYER;
-                mInfo.setText(R.string.your_turn);
-
-                mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                resetGame();
             }
         });
     }
 
+    private void resetGame() {
+        //Reset all game buttons
+        for (Button button:mGameButtons) {
+            button.setBackgroundResource(R.drawable.button_empty);
+            button.setText("");
+            button.setEnabled(true);
+        }
+
+        //Reset the board
+        mGameBoard.resetBoard();
+
+        mCurrentPlayer=mFirstPlayer;
+
+        //Indicate who should start
+        if(mFirstPlayer.equals(Constants.AI)){
+            //AI starts, make a random move
+            AIMakeMove(true);
+        }
+        else{
+            mInfo.setText(R.string.your_turn);
+        }
+        mInfo.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+    }
+
     private void endGame(Integer winner, ArrayList<Integer> winningRow) {
+        //Disable all game buttons
         for (Button button:mGameButtons) {
             button.setEnabled(false);
         }
@@ -115,8 +156,16 @@ public class AgainstAI extends Activity {
             btn.setEnabled(false);
         }
 
-        view.setText(R.string.X);
+        //Display X or O
+        if(mFirstPlayer.equals(Constants.PLAYER)){
+            view.setText(R.string.X);
+        }
+        else{
+            view.setText(R.string.O);
+        }
         view.setTextColor(ContextCompat.getColor(mContext,R.color.GreenPlayer));
+
+        //indicate whose turn it is
         mInfo.setText(R.string.AI_turn);
         mCurrentPlayer=Constants.AI;
 
@@ -125,21 +174,44 @@ public class AgainstAI extends Activity {
             endGame(mGameBoard.getWinner(),mGameBoard.getWinningRow());
         }
         else{
-            AIMakeMove();
+            //Let the AI make a move
+            AIMakeMove(false);
         }
     }
 
-    private void AIMakeMove(){
+    private void AIMakeMove(boolean isFirstMove){
         AIPlayer player= new AIPlayer(mGameBoard);
-        Integer move = player.move();
+        Integer move;
+
+        if(isFirstMove){
+            //It's the first move of the game, make it random
+            Random rand = new Random();
+            move = rand.nextInt(9);
+        }
+        else{
+            //Find the best play available
+            move = player.move();
+        }
+
+        //Change the board state
         mGameBoard.changeBoardState(mCurrentPlayer, move);
-        mGameButtons.get(move).setText(R.string.O);
+
+        //Display X or O
+        if(mFirstPlayer.equals(Constants.AI)){
+            mGameButtons.get(move).setText(R.string.X);
+        }
+        else{
+            mGameButtons.get(move).setText(R.string.O);
+        }
         mGameButtons.get(move).setTextColor(ContextCompat.getColor(mContext,R.color.RedPlayer));
 
+        //Check if game should continue
         if(mGameBoard.hasGameEnded()){
+            //Game has ended, Indicate properly
             endGame(mGameBoard.getWinner(),mGameBoard.getWinningRow());
         }
         else{
+            //Game continues, let the player make a move
             for(int i=0;i<9;i++){
                 if(mGameBoard.getBoardState().get(i).equals(Constants.EMPTY_CELL)){
                     mGameButtons.get(i).setEnabled(true);
