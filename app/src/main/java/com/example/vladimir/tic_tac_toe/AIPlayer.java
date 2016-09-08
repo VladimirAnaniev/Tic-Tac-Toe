@@ -77,7 +77,7 @@ public class AIPlayer {
     }
 
     private Integer evaluate() {
-        //+10 points for win, -10 for lose
+        //+10 points for win, -10 for lose,0 for draw
         if (mBoard.hasGameEnded()) {
             if (mBoard.getWinner().equals(Constants.AI)) {
                 return 10;
