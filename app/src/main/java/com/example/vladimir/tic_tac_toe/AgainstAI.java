@@ -2,6 +2,7 @@ package com.example.vladimir.tic_tac_toe;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -20,6 +21,7 @@ public class AgainstAI extends Activity {
     Board mGameBoard;
     Context mContext;
     Integer mFirstPlayer;
+    Button mBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,16 @@ public class AgainstAI extends Activity {
     private void initialize() {
         //Initialize variables
         mGameBoard=new Board();
+
+        //Initialize back button and add OnClickListener
+        mBackButton=(Button) findViewById(R.id.back_button);
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,HomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //Add all game buttons in an ArrayList
         mGameButtons= new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.example.vladimir.tic_tac_toe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ public class TwoPlayers extends AppCompatActivity {
     ArrayList<Button> mGameButtons;
     Board mGameBoard;
     Context mContext;
+    Button mBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,15 @@ public class TwoPlayers extends AppCompatActivity {
     private void initialize() {
         //Initialize variables
         mGameBoard=new Board();
+
+        mBackButton=(Button) findViewById(R.id.back_button);
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,HomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mGameButtons= new ArrayList<>();
         mGameButtons.add((Button)findViewById(R.id.button));
