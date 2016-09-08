@@ -76,70 +76,18 @@ public class AIPlayer {
         return nextMoves;
     }
 
-    private Integer evaluate(){
-        Integer score=0;
-        //evaluate and add score for all rows,cols,diagonals
-        score+=evaluateLine(0,1,2);
-        score+=evaluateLine(3,4,5);
-        score+=evaluateLine(6,7,8);
-        score+=evaluateLine(0,3,6);
-        score+=evaluateLine(1,4,7);
-        score+=evaluateLine(2,5,8);
-        score+=evaluateLine(0,4,8);
-        score+=evaluateLine(2,4,6);
-
-        return score;
-    }
-
-    private Integer evaluateLine(Integer p1, Integer p2, Integer p3){
-        Integer score = 0;
-
-
-        // First cell
-        if (mBoardState.get(p1).equals(Constants.AI)) {
-            score = 1;
-        } else if (p1.equals(Constants.PLAYER)) {
-            score = -1;
-        }
-
-        // Second cell
-        if (mBoardState.get(p2).equals(Constants.AI)) {
-            if (score == 1) {   // cell1 is AI's
-                score = 10;
-            } else if (score == -1) {  // cell1 is Player's
-
-            } else {  // cell1 is empty
-                score = 1;
+    private Integer evaluate() {
+        //+10 points for win, -10 for lose
+        if (mBoard.hasGameEnded()) {
+            if (mBoard.getWinner().equals(Constants.AI)) {
+                return 10;
+            } else if (mBoard.getWinner().equals(Constants.PLAYER)) {
+                return -10;
             }
-        }
-        else if (mBoardState.get(p2).equals(Constants.PLAYER)) {
-            if (score == -1) { // cell1 is Player's
-                score = -10;
-            } else if (score == 1) { // cell1 is AI's
-
-            } else {  // cell1 is empty
-                score = -1;
-            }
-        }
-
-        // Third cell
-        if (mBoardState.get(p3).equals(Constants.AI)) {
-            if (score > 0) {  // cell1 and/or cell2 is AI's
-                score *= 10;
-            } else if (score < 0) {  // cell1 and/or cell2 is Player's
+            else {
                 return 0;
-            } else {  // cell1 and cell2 are empty
-                score = 1;
-            }
-        } else if (mBoardState.get(p3).equals(Constants.PLAYER)) {
-            if (score < 0) {  // cell1 and/or cell2 is Player's
-                score *= 10;
-            } else if (score > 1) {  // cell1 and/or cell2 is AI's
-                return 0;
-            } else {  // cell1 and cell2 are empty
-                score = -1;
             }
         }
-        return score;
+        return null;
     }
 }
