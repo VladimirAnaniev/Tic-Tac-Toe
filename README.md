@@ -6,7 +6,7 @@ Platform: Android
 2 Game modes:
 -------------
 - Two players (control both X and O)
-- Against AI (Always picks the best play possible)
+- Against AI (Uses minimax algorithm to decide it's next move)
 
 Screenshots:
 ------------
